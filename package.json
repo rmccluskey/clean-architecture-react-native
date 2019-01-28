@@ -1,0 +1,19 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "@types/react": "^16.7.22",
+    "@types/react-native": "^0.57.32",
+    "clean-architecture-todo": "file:../clean-architecture-todo",
+    "expo": "^32.0.0",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "typescript": "^3.2.4"
+  },
+  "devDependencies": {}
+}

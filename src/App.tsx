@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, Button, TouchableNativeFeedback, TextInput } from 'react-native';
+import { Text, View, Button, TouchableNativeFeedback, TextInput, Alert } from 'react-native';
 
 import { TodoInteractor } from "clean-architecture-todo/dist/interactors/todoInteractor";
 import { TodoList } from 'clean-architecture-todo/dist/entities/todoList';
@@ -43,10 +43,21 @@ class App extends React.Component<Props, State> {
   }
 
   async addTodo() {
-    let todoList = await todoInteractor.addTodo(this.state.todoList, this.state.todoTitle);
+    try {
+      let todoList = await todoInteractor.addTodo(this.state.todoList, this.state.todoTitle);
+      this.setState({
+        todoList,
+        todoTitle: ""
+      });
+    } catch (e) {
+      Alert.alert(e.message);
+    }
+  }
+
+  async removeTodo(todo: Todo.Todo) {
+    let todoList = await todoInteractor.removeTodo(this.state.todoList, todo);
     this.setState({
-      todoList,
-      todoTitle: ""
+      todoList
     });
   }
 
@@ -66,9 +77,14 @@ class App extends React.Component<Props, State> {
   render() {
     let todoList = this.state.todoList ? this.state.todoList.map(todo => 
     <TouchableNativeFeedback
+        key={Todo.title(todo)}
         onPress={() => this.toggleTodo(todo)}>
         <View>
             <Text>{`[${Todo.isDone(todo) ? "x" : ""}] ${Todo.title(todo)} - ${Todo.age(todo)}`}</Text>
+            <Button
+              onPress={() => this.removeTodo(todo)}
+              title="X"
+            />
         </View>
     </TouchableNativeFeedback>): <></>;
 
